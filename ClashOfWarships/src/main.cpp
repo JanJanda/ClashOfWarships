@@ -1,27 +1,20 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-    int i = 0;
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+	sf::Texture bcgTexture;
+	if (!bcgTexture.loadFromFile("background.jpg")) return 0; // TODO: error window
+	sf::Sprite background(bcgTexture); // TODO: change color for efects
+	sf::RenderWindow window(sf::VideoMode(960, 640), "Clash of Warships", sf::Style::Titlebar | sf::Style::Close);
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-        i++;
-        std::cout << i << std::endl;
-    }
+	while (window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) window.close();
+		}
+		window.clear(sf::Color::Black);
+		window.draw(background);
 
-    return 0;
+		window.display();
+	}
 }
