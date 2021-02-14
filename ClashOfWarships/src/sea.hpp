@@ -2,35 +2,71 @@
 #define SEA_HPP
 
 #include <SFML/Graphics.hpp>
+#include "resources.hpp"
 
-const int seaTileSize = 40;
-const int seaWidth = 10;
-const int seaHeight = 10;
-
-struct Tile {
-	enum tileStatus : sf::Uint32 {
-		untouched = 0xffffffff,
-		gone = 0xffffff00
-	};
-	Tile() {};
-	Tile(int positionX, int positionY, const sf::Texture& texture);
-	void draw(sf::RenderWindow& window) { window.draw(visual); }
-	tileStatus getStatus() { return status; }
-	void setStatus(tileStatus newStatus);
-private:
-	tileStatus status{ Tile::untouched };
-	sf::Sprite visual;
-};
+const int SEA_TILE_SIZE = 40;
+const int SEA_WIDTH = 10;
+const int SEA_HEIGHT = 10;
+const int SHIPS_COUNT = 6;
 
 class Sea {
 protected:
-	sf::Texture tileTexture;
-	Tile map[seaHeight][seaWidth];
-	int positionX;
-	int positionY;
-public: // virual destrucktor?
-	Sea(int positionX, int positionY);
+
+	struct Tile {
+		enum TileStatus : sf::Uint32 {
+			untouched = 0xffffffff,
+			missed = 0x0000ffff,
+			hitEnemy = 0xff0000ff,
+			hitAlly = 0x000000ff
+		};
+		Tile() {}
+		Tile(int positionX, int positionY, const sf::Texture& texture);
+		void draw(sf::RenderWindow& window) { window.draw(visual); }
+		TileStatus getStatus() { return status; }
+		void setStatus(TileStatus newStatus);
+	private:
+		TileStatus status{ Tile::untouched };
+		sf::Sprite visual;
+	};
+
+	Tile map[SEA_HEIGHT][SEA_WIDTH];
+	const int positionX;
+	const int positionY;
+public: // virtual destrucktor?
+	Sea(int positionX, int positionY, const Resources& res);
 	void draw(sf::RenderWindow& window);
+	bool isActivePosition(int x, int y, int& tileX, int& tileY);
+	void setMissed(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::missed); }
+};
+
+class EnemySea : public Sea { // je to potreba?
+public:
+	EnemySea(int positionX, int positionY, const Resources& res) : Sea(positionX, positionY, res) {}
+	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitEnemy); }
+};
+
+class AlliedSea : public Sea {
+
+	struct Ship {
+		Ship() {}
+		Ship(int positionTileX, int positionTileY, int sizeTileX, int sizeTileY, int seaPositionX, int seaPositionY, const sf::Texture& texture);
+		void draw(sf::RenderWindow& window) { if (visible) window.draw(visual); }
+		bool visible{ true };
+	private:
+		int positionTileX;
+		int positionTileY;
+		int sizeTileX;
+		int sizeTileY;
+		int seaPositionX;
+		int seaPositionY;
+		sf::Sprite visual;
+	};
+
+	Ship fleet[SHIPS_COUNT];
+public:
+	AlliedSea(int positionX, int positionY, const Resources& res);
+	void draw(sf::RenderWindow& window);
+	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitAlly); }
 };
 
 #endif
