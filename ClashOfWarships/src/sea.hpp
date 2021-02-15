@@ -51,6 +51,15 @@ class AlliedSea : public Sea {
 		Ship() {}
 		Ship(int positionTileX, int positionTileY, int sizeTileX, int sizeTileY, int seaPositionX, int seaPositionY, const sf::Texture& texture);
 		void draw(sf::RenderWindow& window) { if (visible) window.draw(visual); }
+		void setPosition(int tileX, int tileY);
+		void rotate();
+		void setMisplaced(bool a);
+		bool getMisplaced() { return misplaced; }
+		bool covers(int tileX, int tileY);
+		int getSizeX() { return positionTileX; }
+		int getSizeY() { return positionTileY; }
+		int getPositionX() { return positionTileX; }
+		int getPositionY() { return positionTileY; }
 		bool visible{ true };
 	private:
 		int positionTileX;
@@ -59,14 +68,19 @@ class AlliedSea : public Sea {
 		int sizeTileY;
 		int seaPositionX;
 		int seaPositionY;
+		bool misplaced{ false };
 		sf::Sprite visual;
 	};
 
 	Ship fleet[SHIPS_COUNT];
+	bool checkPlacement(int shipId);
 public:
 	AlliedSea(int positionX, int positionY, const Resources& res);
 	void draw(sf::RenderWindow& window);
 	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitAlly); }
+	int getShipIdOnPosition(int tileX, int tileY);
+	bool setShipsPosition(int shipId, int tileX, int tileY);
+	bool rotateShip(int shipId);
 };
 
 #endif

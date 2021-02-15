@@ -8,7 +8,6 @@ int main()
 	sf::Sprite background(res.getBackground()); // TODO: change color for efects
 	sf::RenderWindow window(sf::VideoMode(960, 640), "Clash of Warships", sf::Style::Titlebar | sf::Style::Close);
 
-	bool tmps, tmpt; //for debug
 	AlliedSea* s = new AlliedSea(40, 80, res); //for debug
 	EnemySea* t = new EnemySea(520, 80, res); //for debug
 
