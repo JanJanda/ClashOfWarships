@@ -47,14 +47,14 @@ void AlliedSea::Ship::setPosition(int tileX, int tileY) {
 }
 
 void AlliedSea::Ship::rotate() {
-	if (sizeTileX >= sizeTileY) {
+	if (sizeTileX > sizeTileY) {
 		visual.rotate(-90);
 		visual.setOrigin(sizeTileX * SEA_TILE_SIZE, 0);
 		int tmp = sizeTileX;
 		sizeTileX = sizeTileY;
 		sizeTileY = tmp;
 	}
-	else {
+	else if (sizeTileX < sizeTileY) {
 		visual.rotate(90);
 		visual.setOrigin(0, 0);
 		int tmp = sizeTileX;

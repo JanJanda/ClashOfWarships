@@ -56,8 +56,8 @@ class AlliedSea : public Sea {
 		void setMisplaced(bool a);
 		bool getMisplaced() { return misplaced; }
 		bool covers(int tileX, int tileY);
-		int getSizeX() { return positionTileX; }
-		int getSizeY() { return positionTileY; }
+		int getSizeX() { return sizeTileX; }
+		int getSizeY() { return sizeTileY; }
 		int getPositionX() { return positionTileX; }
 		int getPositionY() { return positionTileY; }
 		bool visible{ true };
