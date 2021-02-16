@@ -1,6 +1,8 @@
 #include "sea.hpp"
+#include "resources.hpp"
 
-Sea::Tile::Tile(int positionX, int positionY, const sf::Texture& texture) : visual(sf::Sprite(texture)) {
+Sea::Tile::Tile(int positionX, int positionY) {
+	visual = sf::Sprite(Resources::getTile());
 	visual.setColor(sf::Color(status));
 	visual.setPosition(positionX, positionY);
 }
@@ -10,10 +12,10 @@ void Sea::Tile::setStatus(TileStatus newStatus) {
 	visual.setColor(sf::Color(newStatus));
 }
 
-Sea::Sea(int positionX, int positionY, const Resources& res) : positionX(positionX), positionY(positionY) {
+Sea::Sea(int positionX, int positionY) : positionX(positionX), positionY(positionY) {
 	for (int i = 0; i < SEA_HEIGHT; i++) {
 		for (int j = 0; j < SEA_WIDTH; j++) {
-			map[i][j] = Tile(positionX + (j * SEA_TILE_SIZE), positionY + (i * SEA_TILE_SIZE), res.getTile());
+			map[i][j] = Tile(positionX + (j * SEA_TILE_SIZE), positionY + (i * SEA_TILE_SIZE));
 		}
 	}
 }
@@ -70,13 +72,13 @@ bool AlliedSea::Ship::covers(int tileX, int tileY) {
 	return tileX >= positionTileX && tileX < positionTileX + sizeTileX && tileY >= positionTileY && tileY < positionTileY + sizeTileY;
 }
 
-AlliedSea::AlliedSea(int positionX, int positionY, const Resources& res) : Sea(positionX, positionY, res) {
-	fleet[0] = Ship(0, 0, 4, 2, positionX, positionY, res.getCarrier());
-	fleet[1] = Ship(0, 3, 4, 1, positionX, positionY, res.getBattleship());
-	fleet[2] = Ship(0, 5, 3, 1, positionX, positionY, res.getCruiser());
-	fleet[3] = Ship(0, 7, 2, 1, positionX, positionY, res.getDestroyer());
-	fleet[4] = Ship(0, 9, 2, 1, positionX, positionY, res.getDestroyer());
-	fleet[5] = Ship(2, 8, 1, 1, positionX, positionY, res.getSubmarine());
+AlliedSea::AlliedSea(int positionX, int positionY) : Sea(positionX, positionY) {
+	fleet[0] = Ship(0, 0, 4, 2, positionX, positionY, Resources::getCarrier());
+	fleet[1] = Ship(0, 3, 4, 1, positionX, positionY, Resources::getBattleship());
+	fleet[2] = Ship(0, 5, 3, 1, positionX, positionY, Resources::getCruiser());
+	fleet[3] = Ship(0, 7, 2, 1, positionX, positionY, Resources::getDestroyer());
+	fleet[4] = Ship(0, 9, 2, 1, positionX, positionY, Resources::getDestroyer());
+	fleet[5] = Ship(2, 8, 1, 1, positionX, positionY, Resources::getSubmarine());
 }
 
 void AlliedSea::draw(sf::RenderWindow& window) {

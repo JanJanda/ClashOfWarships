@@ -2,7 +2,6 @@
 #define SEA_HPP
 
 #include <SFML/Graphics.hpp>
-#include "resources.hpp"
 
 const int SEA_TILE_SIZE = 40;
 const int SEA_WIDTH = 10;
@@ -20,7 +19,7 @@ protected:
 			hitAlly = 0x000000ff
 		};
 		Tile() {}
-		Tile(int positionX, int positionY, const sf::Texture& texture);
+		Tile(int positionX, int positionY);
 		void draw(sf::RenderWindow& window) { window.draw(visual); }
 		TileStatus getStatus() { return status; }
 		void setStatus(TileStatus newStatus);
@@ -33,7 +32,7 @@ protected:
 	const int positionX;
 	const int positionY;
 public: // virtual destrucktor?
-	Sea(int positionX, int positionY, const Resources& res);
+	Sea(int positionX, int positionY);
 	void draw(sf::RenderWindow& window);
 	bool isActivePosition(int x, int y, int& tileX, int& tileY);
 	void setMissed(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::missed); }
@@ -41,7 +40,7 @@ public: // virtual destrucktor?
 
 class EnemySea : public Sea { // je to potreba?
 public:
-	EnemySea(int positionX, int positionY, const Resources& res) : Sea(positionX, positionY, res) {}
+	EnemySea(int positionX, int positionY) : Sea(positionX, positionY) {}
 	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitEnemy); }
 };
 
@@ -75,7 +74,7 @@ class AlliedSea : public Sea {
 	Ship fleet[SHIPS_COUNT];
 	bool checkPlacement(int shipId);
 public:
-	AlliedSea(int positionX, int positionY, const Resources& res);
+	AlliedSea(int positionX, int positionY);
 	void draw(sf::RenderWindow& window);
 	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitAlly); }
 	int getShipIdOnPosition(int tileX, int tileY);

@@ -4,12 +4,12 @@
 
 int main()
 {
-	Resources res; // TODO: error window
-	sf::Sprite background(res.getBackground()); // TODO: change color for efects
+	// TODO: error window
+	sf::Sprite background(Resources::getBackground()); // TODO: change color for efects
 	sf::RenderWindow window(sf::VideoMode(960, 640), "Clash of Warships", sf::Style::Titlebar | sf::Style::Close);
 
-	AlliedSea* s = new AlliedSea(40, 80, res); //for debug
-	EnemySea* t = new EnemySea(520, 80, res); //for debug
+	AlliedSea* s = new AlliedSea(40, 80); //for debug
+	EnemySea* t = new EnemySea(520, 80); //for debug
 	int heldShip = -1;
 	bool ok = true;
 
