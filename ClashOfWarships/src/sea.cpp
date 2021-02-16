@@ -27,7 +27,7 @@ void Sea::draw(sf::RenderWindow& window) {
 }
 
 bool Sea::isActivePosition(int x, int y, int& tileX, int& tileY) {
-	if (x >= positionX && x <= positionX + (SEA_TILE_SIZE * SEA_WIDTH) && y >= positionY && y <= positionY + (SEA_TILE_SIZE * SEA_HEIGHT)) {
+	if (x >= positionX && x < positionX + (SEA_TILE_SIZE * SEA_WIDTH) && y >= positionY && y < positionY + (SEA_TILE_SIZE * SEA_HEIGHT)) {
 		tileX = (x - positionX) / SEA_TILE_SIZE;
 		tileY = (y - positionY) / SEA_TILE_SIZE;
 		return map[tileY][tileX].getStatus() == Tile::untouched;
@@ -50,21 +50,18 @@ void AlliedSea::Ship::rotate() {
 	if (sizeTileX > sizeTileY) {
 		visual.rotate(-90);
 		visual.setOrigin(sizeTileX * SEA_TILE_SIZE, 0);
-		int tmp = sizeTileX;
-		sizeTileX = sizeTileY;
-		sizeTileY = tmp;
 	}
 	else if (sizeTileX < sizeTileY) {
 		visual.rotate(90);
 		visual.setOrigin(0, 0);
-		int tmp = sizeTileX;
-		sizeTileX = sizeTileY;
-		sizeTileY = tmp;
 	}
+	int tmp = sizeTileX;
+	sizeTileX = sizeTileY;
+	sizeTileY = tmp;
 }
 
 void AlliedSea::Ship::setMisplaced(bool a) {
-	if (a) visual.setColor(sf::Color(0xff00008f));
+	if (a) visual.setColor(sf::Color(0xff000080));
 	else visual.setColor(sf::Color(0xffffffff));
 	misplaced = a;
 }
@@ -98,14 +95,9 @@ int AlliedSea::getShipIdOnPosition(int tileX, int tileY) {
 
 bool AlliedSea::setShipsPosition(int shipId, int tileX, int tileY) {
 	fleet[shipId].setPosition(tileX, tileY);
-	if (checkPlacement(shipId)) {
-		fleet[shipId].setMisplaced(false);
-		return true;
-	}
-	else {
-		fleet[shipId].setMisplaced(true);
-		return false;
-	}
+	bool check = checkPlacement(shipId);
+	fleet[shipId].setMisplaced(!check);
+	return check;
 }
 
 bool AlliedSea::rotateShip(int shipId) {
