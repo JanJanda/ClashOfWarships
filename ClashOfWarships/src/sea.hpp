@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-const int SEA_TILE_SIZE = 40;
+const int SEA_TILE_SIZE = 40; // static?
 const int SEA_WIDTH = 10;
 const int SEA_HEIGHT = 10;
 const int SHIPS_COUNT = 6;
@@ -24,7 +24,7 @@ protected:
 		TileStatus getStatus() { return status; }
 		void setStatus(TileStatus newStatus);
 	private:
-		TileStatus status{ Tile::untouched };
+		TileStatus status{ untouched };
 		sf::Sprite visual;
 	};
 

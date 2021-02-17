@@ -159,11 +159,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\resources.cpp" />
     <ClCompile Include="src\sea.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game.hpp" />
     <ClInclude Include="src\resources.hpp" />
     <ClInclude Include="src\sea.hpp" />
   </ItemGroup>

@@ -1,8 +1,7 @@
 #include "sea.hpp"
 #include "resources.hpp"
 
-Sea::Tile::Tile(int positionX, int positionY) {
-	visual = sf::Sprite(Resources::getTile());
+Sea::Tile::Tile(int positionX, int positionY) : visual(sf::Sprite(Resources::getTile())) {
 	visual.setColor(sf::Color(status));
 	visual.setPosition(positionX, positionY);
 }
