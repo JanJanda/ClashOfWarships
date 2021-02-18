@@ -14,6 +14,8 @@ class Resources {
 	sf::Texture cruiser;
 	sf::Texture destroyer;
 	sf::Texture submarine;
+	sf::Texture rust;
+	sf::Font stencil;
 public:
 	Resources(const Resources&) = delete;
 	Resources& operator=(const Resources&) = delete;
@@ -25,6 +27,8 @@ public:
 	static const sf::Texture& getCruiser() { return get().cruiser; }
 	static const sf::Texture& getDestroyer() { return get().destroyer; }
 	static const sf::Texture& getSubmarine() { return get().submarine; }
+	static const sf::Texture& getRust() { return get().rust; }
+	static const sf::Font& getStencil() { return get().stencil; }
 };
 
 #endif

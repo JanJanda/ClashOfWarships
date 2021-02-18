@@ -9,4 +9,6 @@ Resources::Resources() {
 	if (!cruiser.loadFromFile("cruiser.png")) message = "cruiser.png not found";
 	if (!destroyer.loadFromFile("destroyer.png")) message = "destroyer.png not found";
 	if (!submarine.loadFromFile("submarine.png")) message = "submarine.png not found";
+	if (!rust.loadFromFile("rust.png")) message = "rust.png not found";
+	if (!stencil.loadFromFile("stencil.ttf")) message = "stencil.ttf not found";
 }

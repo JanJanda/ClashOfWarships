@@ -10,13 +10,13 @@ void Game::processEventInPrep(const sf::Event& event) {
 			int x, y;
 			if (alsea.isActivePosition(event.mouseButton.x, event.mouseButton.y, x, y)) {
 				if (heldShip == -1) heldShip = alsea.getShipIdOnPosition(x, y);
-				else if (shipPlaced) heldShip = -1;
+				else if (shipWellPlaced) heldShip = -1;
 			}
 		}
 		if (event.mouseButton.button == sf::Mouse::Right) {
 			int x, y;
 			if (alsea.isActivePosition(event.mouseButton.x, event.mouseButton.y, x, y)) {
-				if (heldShip != -1) shipPlaced = alsea.rotateShip(heldShip);
+				if (heldShip != -1) shipWellPlaced = alsea.rotateShip(heldShip);
 			}
 		}
 	}
@@ -24,7 +24,7 @@ void Game::processEventInPrep(const sf::Event& event) {
 		if (heldShip != -1) {
 			int x, y;
 			if (alsea.isActivePosition(event.mouseMove.x, event.mouseMove.y, x, y)) {
-				shipPlaced = alsea.setShipsPosition(heldShip, x, y);
+				shipWellPlaced = alsea.setShipsPosition(heldShip, x, y);
 			}
 		}
 	}
