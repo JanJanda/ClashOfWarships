@@ -1,7 +1,7 @@
 #include "sea.hpp"
 #include "resources.hpp"
 
-Sea::Tile::Tile(int positionX, int positionY) : visual(sf::Sprite(Resources::getTile())) {
+Sea::Tile::Tile(int positionX, int positionY) {
 	visual.setColor(sf::Color(status));
 	visual.setPosition(positionX, positionY);
 }
@@ -37,7 +37,7 @@ bool Sea::isActivePosition(int x, int y, int& tileX, int& tileY) {
 }
 
 AlliedSea::Ship::Ship(int positionTileX, int positionTileY, int sizeTileX, int sizeTileY, int seaPositionX, int seaPositionY, const sf::Texture& texture)
-: positionTileX(positionTileX), positionTileY(positionTileY), sizeTileX(sizeTileX), sizeTileY(sizeTileY), seaPositionX(seaPositionX), seaPositionY(seaPositionY), visual(sf::Sprite(texture)) {
+: positionTileX(positionTileX), positionTileY(positionTileY), sizeTileX(sizeTileX), sizeTileY(sizeTileY), seaPositionX(seaPositionX), seaPositionY(seaPositionY), visual(texture) {
 	visual.setPosition(seaPositionX + (positionTileX * SEA_TILE_SIZE), seaPositionY + (positionTileY * SEA_TILE_SIZE));
 }
 

@@ -163,6 +163,7 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\network.cpp" />
+    <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\resources.cpp" />
     <ClCompile Include="src\sea.cpp" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClInclude Include="src\button.hpp" />
     <ClInclude Include="src\game.hpp" />
     <ClInclude Include="src\network.hpp" />
+    <ClInclude Include="src\program.hpp" />
     <ClInclude Include="src\resources.hpp" />
     <ClInclude Include="src\sea.hpp" />
   </ItemGroup>

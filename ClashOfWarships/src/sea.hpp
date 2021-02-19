@@ -2,6 +2,7 @@
 #define SEA_HPP
 
 #include <SFML/Graphics.hpp>
+#include "resources.hpp"
 
 const int SEA_TILE_SIZE = 40; // static?
 const int SEA_WIDTH = 10;
@@ -25,7 +26,7 @@ protected:
 		void setStatus(TileStatus newStatus);
 	private:
 		TileStatus status{ untouched };
-		sf::Sprite visual;
+		sf::Sprite visual{ Resources::getTile() };
 	};
 
 	Tile map[SEA_HEIGHT][SEA_WIDTH];

@@ -7,7 +7,7 @@
 class Button {
 	const int sizeX = 120;
 	const int sizeY = 60;
-	sf::Sprite bcg{ sf::Sprite(Resources::getRust()) };
+	sf::Sprite bcg{ Resources::getRust() };
 	sf::Text txt;
 	int positionX;
 	int positionY;

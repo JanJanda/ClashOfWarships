@@ -7,8 +7,8 @@
 class Game {
 	enum GameStatus { preparation, ready };
 	GameStatus status{ preparation };
-	AlliedSea alsea{ AlliedSea(40, 80) };
-	EnemySea ensea{ EnemySea(520, 80) };
+	AlliedSea alsea{ 40, 80 };
+	EnemySea ensea{ 520, 80 };
 	int heldShip{ -1 };
 	bool shipWellPlaced{ true };
 	void processEventInPrep(const sf::Event& event);
