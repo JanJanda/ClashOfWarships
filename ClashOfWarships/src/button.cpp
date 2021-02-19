@@ -20,3 +20,8 @@ bool Button::isClicked(const sf::Event& event) {
 	event.mouseButton.x >= positionX && event.mouseButton.x < positionX + sizeX &&
 	event.mouseButton.y >= positionY && event.mouseButton.y < positionY + sizeY;
 }
+
+void Button::setText(const std::string& text) {
+	txt.setString(text);
+	centerText();
+}

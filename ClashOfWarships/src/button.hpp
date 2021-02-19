@@ -16,6 +16,7 @@ public:
 	Button(int positionX, int positionY, const std::string& text);
 	void draw(sf::RenderWindow& window) { window.draw(bcg); window.draw(txt); }
 	bool isClicked(const sf::Event& event);
+	void setText(const std::string& text);
 };
 
 #endif

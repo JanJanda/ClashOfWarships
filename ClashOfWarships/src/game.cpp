@@ -29,3 +29,16 @@ void Game::processEventInPrep(const sf::Event& event) {
 		}
 	}
 }
+
+bool Game::setReady() {
+	if (heldShip == -1) {
+		status = ready;
+		return true;
+	}
+	else if (shipWellPlaced) {
+		heldShip = -1;
+		status = ready;
+		return true;
+	}
+	else return false;
+}

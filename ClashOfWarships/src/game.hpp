@@ -5,7 +5,7 @@
 #include "sea.hpp"
 
 class Game {
-	enum GameStatus { preparation };
+	enum GameStatus { preparation, ready };
 	GameStatus status{ preparation };
 	AlliedSea alsea{ AlliedSea(40, 80) };
 	EnemySea ensea{ EnemySea(520, 80) };
@@ -15,6 +15,8 @@ class Game {
 public:
 	void draw(sf::RenderWindow& window) { ensea.draw(window); alsea.draw(window); }
 	void acceptEvent(const sf::Event& event);
+	bool setReady();
+	void setPreparation() { status = preparation; }
 };
 
 #endif
