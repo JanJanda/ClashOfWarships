@@ -18,11 +18,17 @@ class Program {
 	Button joinButton{ 520, 560, "JOIN" };
 	Network net;
 	std::string enteredIP{ "" };
+	static const int helpLines = 6;
+	sf::Text help[helpLines];
+	bool showHelp{ false };
+	sf::Text helpClue;
 
 	void acceptEvent(const sf::Event& event);
 	void setStatus(ProgramStatus newStatus);
 	void newFrame();
 public:
+	static const int windowWidth = 960;
+	static const int windowHeight = 640;
 	Program(sf::RenderWindow& rw);
 	bool run();
 };

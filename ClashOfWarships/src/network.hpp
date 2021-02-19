@@ -4,7 +4,7 @@
 #include <SFML/Network.hpp>
 
 class Network {
-	const int port = 52218;
+	static const int port = 52218;
 	sf::TcpListener listener;
 	sf::TcpSocket sock;
 public:

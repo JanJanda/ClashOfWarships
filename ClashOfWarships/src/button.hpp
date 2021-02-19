@@ -5,8 +5,8 @@
 #include "resources.hpp"
 
 class Button {
-	const int sizeX = 120;
-	const int sizeY = 60;
+	static const int sizeX = 120;
+	static const int sizeY = 60;
 	sf::Sprite bcg{ Resources::getRust() };
 	sf::Text txt;
 	int positionX;

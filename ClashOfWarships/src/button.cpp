@@ -10,8 +10,7 @@ Button::Button(int positionX, int positionY, const std::string& text) : position
 }
 
 void Button::centerText() {
-	float width = txt.getLocalBounds().width;
-	float offset = (sizeX - width) / 2;
+	int offset = (sizeX - txt.getLocalBounds().width) / 2;
 	txt.setPosition(positionX + offset - 3, positionY + 4);
 }
 

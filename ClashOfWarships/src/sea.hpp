@@ -4,13 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include "resources.hpp"
 
-const int SEA_TILE_SIZE = 40; // static?
-const int SEA_WIDTH = 10;
-const int SEA_HEIGHT = 10;
-const int SHIPS_COUNT = 6;
-
 class Sea {
 protected:
+	static const int SEA_TILE_SIZE = 40;
+	static const int SEA_WIDTH = 10;
+	static const int SEA_HEIGHT = 10;
 
 	struct Tile {
 		enum TileStatus : sf::Uint32 {
@@ -72,6 +70,7 @@ class AlliedSea : public Sea {
 		sf::Sprite visual;
 	};
 
+	static const int SHIPS_COUNT = 6;
 	Ship fleet[SHIPS_COUNT];
 	bool checkPlacement(int shipId);
 public:
