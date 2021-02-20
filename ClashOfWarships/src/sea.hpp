@@ -48,7 +48,7 @@ class AlliedSea : public Sea {
 	struct Ship {
 		Ship() {}
 		Ship(int positionTileX, int positionTileY, int sizeTileX, int sizeTileY, int seaPositionX, int seaPositionY, const sf::Texture& texture);
-		void draw(sf::RenderWindow& window) { if (visible) window.draw(visual); }
+		void draw(sf::RenderWindow& window) { if (health > 0) window.draw(visual); }
 		void setPosition(int tileX, int tileY);
 		void rotate();
 		void setMisplaced(bool a);
@@ -58,7 +58,8 @@ class AlliedSea : public Sea {
 		int getSizeY() { return sizeTileY; }
 		int getPositionX() { return positionTileX; }
 		int getPositionY() { return positionTileY; }
-		bool visible{ true };
+		int getHealth() { return health; }
+		void reduceHealth() { health--; }
 	private:
 		int positionTileX;
 		int positionTileY;
@@ -66,6 +67,7 @@ class AlliedSea : public Sea {
 		int sizeTileY;
 		int seaPositionX;
 		int seaPositionY;
+		int health;
 		bool misplaced{ false };
 		sf::Sprite visual;
 	};
@@ -76,10 +78,11 @@ class AlliedSea : public Sea {
 public:
 	AlliedSea(int positionX, int positionY);
 	void draw(sf::RenderWindow& window);
-	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitAlly); }
+	void setHit(int tileX, int tileY);
 	int getShipIdOnPosition(int tileX, int tileY);
 	bool setShipsPosition(int shipId, int tileX, int tileY);
 	bool rotateShip(int shipId);
+	int getFleetsHealth();
 };
 
 #endif

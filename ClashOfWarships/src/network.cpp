@@ -19,25 +19,27 @@ bool Network::join(const std::string& address) {
 void Network::sendFire(sf::Uint8 tileX, sf::Uint8 tileY) {
 	sf::Packet pack;
 	pack << tileX << tileY;
-	sock.send(pack);
+	sf::Socket::Status st = sf::Socket::Partial;
+	while (st == sf::Socket::Partial) st = sock.send(pack);
 }
 
-void Network::receiveFire(sf::Uint8& tileX, sf::Uint8& tileY) {
+sf::Socket::Status Network::receiveFire(sf::Uint8& tileX, sf::Uint8& tileY) {
 	sf::Packet pack;
-	sock.receive(pack);
-	pack >> tileX >> tileY;
+	sf::Socket::Status st = sock.receive(pack);
+	if (st == sf::Socket::Done)	pack >> tileX >> tileY;
+	return st;
 }
 
 void Network::sendImpact(bool hit) {
 	sf::Packet pack;
 	pack << hit;
-	sock.send(pack);
+	sf::Socket::Status st = sf::Socket::Partial;
+	while (st == sf::Socket::Partial) st = sock.send(pack);
 }
 
-bool Network::receiveImpact() {
+sf::Socket::Status Network::receiveImpact(bool& hit) {
 	sf::Packet pack;
-	sock.receive(pack);
-	bool ret;
-	pack >> ret;
-	return ret;
+	sf::Socket::Status st = sock.receive(pack);
+	if (st == sf::Socket::Done)	pack >> hit;
+	return st;
 }

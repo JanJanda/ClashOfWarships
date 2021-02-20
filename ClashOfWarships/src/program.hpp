@@ -8,7 +8,7 @@
 #include "game.hpp"
 
 class Program {
-	enum ProgramStatus { nothing, listening, catchIP, join, gameOn };
+	enum ProgramStatus { nothing, listening, catchIP, join, sendFire, receiveFire, receiveImpact, victory, defeat };
 	ProgramStatus status{ nothing };
 	sf::Sprite background{ Resources::getBackground() };
 	sf::RenderWindow& window;

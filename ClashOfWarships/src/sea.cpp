@@ -37,7 +37,7 @@ bool Sea::isActivePosition(int x, int y, int& tileX, int& tileY) {
 }
 
 AlliedSea::Ship::Ship(int positionTileX, int positionTileY, int sizeTileX, int sizeTileY, int seaPositionX, int seaPositionY, const sf::Texture& texture)
-: positionTileX(positionTileX), positionTileY(positionTileY), sizeTileX(sizeTileX), sizeTileY(sizeTileY), seaPositionX(seaPositionX), seaPositionY(seaPositionY), visual(texture) {
+: positionTileX(positionTileX), positionTileY(positionTileY), sizeTileX(sizeTileX), sizeTileY(sizeTileY), seaPositionX(seaPositionX), seaPositionY(seaPositionY), visual(texture), health(sizeTileX * sizeTileY) {
 	visual.setPosition(seaPositionX + (positionTileX * SEA_TILE_SIZE), seaPositionY + (positionTileY * SEA_TILE_SIZE));
 }
 
@@ -128,4 +128,18 @@ bool AlliedSea::checkPlacement(int shipId) {
 		}
 	}
 	return true;
+}
+
+int AlliedSea::getFleetsHealth() {
+	int tmp = 0;
+	for (int i = 0; i < SHIPS_COUNT; i++) {
+		tmp += fleet[i].getHealth();
+	}
+	return tmp;
+}
+
+void AlliedSea::setHit(int tileX, int tileY) {
+	map[tileY][tileX].setStatus(Tile::hitAlly);
+	int s = getShipIdOnPosition(tileX, tileY);
+	if (s >= 0 && s < SHIPS_COUNT) fleet[s].reduceHealth();
 }

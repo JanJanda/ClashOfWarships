@@ -1,5 +1,10 @@
 #include "game.hpp"
 
+Game::Game() {
+	allyHealth = alsea.getFleetsHealth();
+	enemyHealth = allyHealth;
+}
+
 void Game::acceptEvent(const sf::Event& event) {
 	if (status == preparation) processEventInPrep(event);
 	else if (status == myTurn) processMyTurn(event);
@@ -44,7 +49,7 @@ bool Game::setReady() {
 	else return false;
 }
 
-void Game::start(bool istart) {
+void Game::gaming(bool istart) {
 	if (istart) status = myTurn;
 	else status = hisTurn;
 }
@@ -56,25 +61,26 @@ void Game::processMyTurn(const sf::Event& event) {
 			firedX = x;
 			firedY = y;
 			fired = true;
-			status = hisTurn;
 		}
 	}
 }
 
-void Game::reportImpact(bool hit) {
-	fired = false;
-	if (hit) ensea.setHit(firedX, firedY);
+void Game::acceptImpact(bool hit) {
+	if (hit) {
+		ensea.setHit(firedX, firedY);
+		enemyHealth--;
+	}
 	else ensea.setMissed(firedX, firedY);
 }
 
-bool Game::acceptImpact(int x, int y) {
-	status = myTurn;
+bool Game::reportImpact(int x, int y) {
 	if (alsea.getShipIdOnPosition(x, y) == -1) {
 		alsea.setMissed(x, y);
 		return false;
 	} 
 	else {
 		alsea.setHit(x, y);
+		allyHealth--;
 		return true;
 	}
 }

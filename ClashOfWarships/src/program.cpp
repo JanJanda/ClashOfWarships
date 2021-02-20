@@ -21,40 +21,55 @@ Program::Program(sf::RenderWindow& rw) : window(rw) {
 }
 
 bool Program::run() {
-	bool receiveFire = false;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
+			if (status == victory || status == defeat) {
+				if (readyButton.isClicked(event)) return true;
+				if (joinButton.isClicked(event)) window.close();
+			}
 			if (event.type == sf::Event::Closed) window.close();
 			else acceptEvent(event);
 		}
 		newFrame();
 
-		if (receiveFire) {
-			receiveFire = false;
-			sf::Uint8 x, y;
-			net.receiveFire(x, y);
-			net.sendImpact(game.acceptImpact(x, y));
+		if (status != victory && status != defeat) {
+			if (game.getAllyHealth() <= 0) setStatus(defeat);
+			if (game.getEnemyHealth() <= 0) setStatus(victory);
 		}
-		if (status == listening) {
-			if (net.accept()) {
-				setStatus(gameOn);
-				game.start(true);
+
+		if (status == receiveFire) {
+			sf::Uint8 x, y;
+			sf::Socket::Status st = net.receiveFire(x, y);
+			if (st == sf::Socket::Done) {
+				bool aux = game.reportImpact(x, y);
+				if (!aux) setStatus(sendFire);
+				net.sendImpact(aux);
 			}
+		}
+		if (status == sendFire) {
+			if (game.getFired()) {
+				setStatus(receiveImpact);
+				net.sendFire(game.getFiredX(), game.getFiredY());
+			}
+		}
+		if (status == receiveImpact) {
+			bool hit;
+			sf::Socket::Status st = net.receiveImpact(hit);
+			if (st == sf::Socket::Done) {
+				game.acceptImpact(hit);
+				if (hit) setStatus(sendFire);
+				else setStatus(receiveFire);
+			}
+		}
+
+		if (status == listening) {
+			if (net.accept()) setStatus(sendFire);
 		}
 		if (status == join) {
 			setStatus(nothing);
-			if (net.join(enteredIP)) {
-				setStatus(gameOn);
-				game.start(false);
-				receiveFire = true;
-			}
+			if (net.join(enteredIP)) setStatus(receiveFire);
 			else infoLine.setString("CONNECTION FAILED");
-		}
-		if (game.getFired()) {
-			net.sendFire(game.getFiredX(), game.getFiredY());
-			game.reportImpact(net.receiveImpact());
-			receiveFire = true;
 		}
 	}
 	return false;
@@ -126,10 +141,37 @@ void Program::setStatus(ProgramStatus newStatus) {
 		readyButton.setText("READY");
 		joinButton.setText("WAIT");
 	}
-	else if (newStatus == gameOn) {
-		infoLine.setString("");
+	else if (newStatus == sendFire) {
+		net.setBlocking(false);
+		game.gaming(true);
+		infoLine.setString("FIRE!!!");
 		readyButton.visible = false;
 		joinButton.visible = false;
+	}
+	else if (newStatus == receiveFire) {
+		net.setBlocking(false);
+		game.gaming(false);
+		infoLine.setString("WAIT");
+		readyButton.visible = false;
+		joinButton.visible = false;
+	}
+	else if (newStatus == victory) {
+		game.setReady();
+		background.setColor(sf::Color::Blue);
+		infoLine.setString("VICTORY");
+		readyButton.setText("RESET");
+		readyButton.visible = true;
+		joinButton.setText("CLOSE");
+		joinButton.visible = true;
+	}
+	else if (newStatus == defeat) {
+		game.setReady();
+		background.setColor(sf::Color::Red);
+		infoLine.setString("DEFEAT");
+		readyButton.setText("RESET");
+		readyButton.visible = true;
+		joinButton.setText("CLOSE");
+		joinButton.visible = true;
 	}
 	status = newStatus;
 }
