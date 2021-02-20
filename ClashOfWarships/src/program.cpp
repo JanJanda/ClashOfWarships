@@ -67,9 +67,11 @@ bool Program::run() {
 			if (net.accept()) setStatus(sendFire);
 		}
 		if (status == join) {
-			setStatus(nothing);
 			if (net.join(enteredIP)) setStatus(receiveFire);
-			else infoLine.setString("CONNECTION FAILED");
+			else {
+				setStatus(nothing);
+				infoLine.setString("CONNECTION FAILED");
+			}
 		}
 	}
 	return false;
@@ -155,6 +157,13 @@ void Program::setStatus(ProgramStatus newStatus) {
 		readyButton.visible = false;
 		joinButton.visible = false;
 	}
+	else if (newStatus == receiveImpact) {
+		net.setBlocking(false);
+		game.gaming(false);
+		infoLine.setString("WAIT");
+		readyButton.visible = false;
+		joinButton.visible = false;
+	}
 	else if (newStatus == victory) {
 		game.setReady();
 		background.setColor(sf::Color::Blue);
@@ -174,6 +183,7 @@ void Program::setStatus(ProgramStatus newStatus) {
 		joinButton.visible = true;
 	}
 	status = newStatus;
+	newFrame();
 }
 
 void Program::newFrame() {
