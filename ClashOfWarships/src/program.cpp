@@ -6,18 +6,11 @@ Program::Program(sf::RenderWindow& rw) : window(rw) {
 	infoLine.setFillColor(sf::Color::White);
 	infoLine.setPosition(40, 490);
 
-	for (int i = 0; i < helpLines; i++) {
-		help[i].setFont(Resources::getStencil());
-		help[i].setCharacterSize(40);
-		help[i].setFillColor(sf::Color::White);
-		help[i].setPosition(40, 40 + (60 * i));
-	}
-	help[0].setString("click on a ship to grab her");
-	help[1].setString("then move your mouse to move the ship");
-	help[2].setString("click again to release her if she is properly placed");
-	help[3].setString("click right mouse button to rotate the held ship");
-	help[4].setString("click READY button to wait for an opponent");
-	help[5].setString("click JOIN button to connect to an opponent");
+	help.setFont(Resources::getStencil());
+	help.setCharacterSize(40);
+	help.setFillColor(sf::Color::White);
+	help.setPosition(40, 40);
+	help.setString("click on a ship to grab her\nthen move your mouse to move the ship\nclick again to release her if she is properly placed\nclick right mouse button to rotate the held ship\nclick READY button to wait for an opponent\nclick JOIN button to connect to an opponent");
 
 	helpClue.setFont(Resources::getStencil());
 	helpClue.setCharacterSize(17);
@@ -28,6 +21,7 @@ Program::Program(sf::RenderWindow& rw) : window(rw) {
 }
 
 bool Program::run() {
+	bool receiveFire = false;
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -36,18 +30,31 @@ bool Program::run() {
 		}
 		newFrame();
 
+		if (receiveFire) {
+			receiveFire = false;
+			sf::Uint8 x, y;
+			net.receiveFire(x, y);
+			net.sendImpact(game.acceptImpact(x, y));
+		}
 		if (status == listening) {
 			if (net.accept()) {
-				setStatus(nothing);
-				//hra
+				setStatus(gameOn);
+				game.start(true);
 			}
 		}
 		if (status == join) {
 			setStatus(nothing);
 			if (net.join(enteredIP)) {
-				//hra
+				setStatus(gameOn);
+				game.start(false);
+				receiveFire = true;
 			}
 			else infoLine.setString("CONNECTION FAILED");
+		}
+		if (game.getFired()) {
+			net.sendFire(game.getFiredX(), game.getFiredY());
+			game.reportImpact(net.receiveImpact());
+			receiveFire = true;
 		}
 	}
 	return false;
@@ -119,12 +126,17 @@ void Program::setStatus(ProgramStatus newStatus) {
 		readyButton.setText("READY");
 		joinButton.setText("WAIT");
 	}
+	else if (newStatus == gameOn) {
+		infoLine.setString("");
+		readyButton.visible = false;
+		joinButton.visible = false;
+	}
 	status = newStatus;
 }
 
 void Program::newFrame() {
-	window.clear();
-	if (showHelp) for (int i = 0; i < helpLines; i++) window.draw(help[i]);
+	window.clear(sf::Color(0x444454ff));
+	if (showHelp) window.draw(help);
 	else {
 		window.draw(background);
 		game.draw(window);

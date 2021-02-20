@@ -6,6 +6,7 @@
 class Resources {
 	Resources();
 	static const Resources& get() { static Resources instance; return instance; }
+	void report(const std::string& txt);
 	std::string message;
 	sf::Texture background;
 	sf::Texture tile;

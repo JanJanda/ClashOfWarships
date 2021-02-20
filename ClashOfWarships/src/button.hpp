@@ -13,8 +13,9 @@ class Button {
 	int positionY;
 	void centerText();
 public:
+	bool visible{ true };
 	Button(int positionX, int positionY, const std::string& text);
-	void draw(sf::RenderWindow& window) { window.draw(bcg); window.draw(txt); }
+	void draw(sf::RenderWindow& window) { if (visible) { window.draw(bcg); window.draw(txt); } }
 	bool isClicked(const sf::Event& event);
 	void setText(const std::string& text);
 };

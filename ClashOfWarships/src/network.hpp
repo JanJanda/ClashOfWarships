@@ -12,6 +12,10 @@ public:
 	bool listen();
 	bool accept();
 	bool join(const std::string& address);
+	void sendFire(sf::Uint8 tileX, sf::Uint8 tileY);
+	void receiveFire(sf::Uint8& tileX, sf::Uint8& tileY);
+	void sendImpact(bool hit);
+	bool receiveImpact();
 	static std::string getMyAddress() { return sf::IpAddress::getLocalAddress().toString(); }
 };
 

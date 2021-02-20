@@ -3,3 +3,4 @@ bin/
 *.user
 ClashOfWarships/*.png
 ClashOfWarships/*.ttf
+ClashOfWarships/ERROR_MESSAGE.txt

@@ -15,7 +15,7 @@ void Button::centerText() {
 }
 
 bool Button::isClicked(const sf::Event& event) {
-	return event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left &&
+	return visible && event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left &&
 	event.mouseButton.x >= positionX && event.mouseButton.x < positionX + sizeX &&
 	event.mouseButton.y >= positionY && event.mouseButton.y < positionY + sizeY;
 }

@@ -8,7 +8,7 @@
 #include "game.hpp"
 
 class Program {
-	enum ProgramStatus { nothing, listening, catchIP, join };
+	enum ProgramStatus { nothing, listening, catchIP, join, gameOn };
 	ProgramStatus status{ nothing };
 	sf::Sprite background{ Resources::getBackground() };
 	sf::RenderWindow& window;
@@ -18,8 +18,7 @@ class Program {
 	Button joinButton{ 520, 560, "JOIN" };
 	Network net;
 	std::string enteredIP{ "" };
-	static const int helpLines = 6;
-	sf::Text help[helpLines];
+	sf::Text help;
 	bool showHelp{ false };
 	sf::Text helpClue;
 
