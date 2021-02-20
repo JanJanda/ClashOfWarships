@@ -10,6 +10,7 @@ class Network {
 public:
 	Network();
 	bool listen();
+	void stopListening() { listener.close(); }
 	bool accept();
 	bool join(const std::string& address);
 	void sendFire(sf::Uint8 tileX, sf::Uint8 tileY);

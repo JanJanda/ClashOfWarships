@@ -119,6 +119,7 @@ void Program::acceptEvent(const sf::Event& event) {
 
 void Program::setStatus(ProgramStatus newStatus) {
 	if (newStatus == nothing) {
+		net.stopListening();
 		game.setPreparation();
 		infoLine.setString("");
 		readyButton.setText("READY");
@@ -132,18 +133,21 @@ void Program::setStatus(ProgramStatus newStatus) {
 	}
 	else if (newStatus == catchIP) {
 		enteredIP = "";
+		net.stopListening();
 		game.setReady();
 		infoLine.setString("ENTER IP ADDRESS AND PRESS ENTER");
 		readyButton.setText("READY");
 		joinButton.setText("CANCEL");
 	}
 	else if (newStatus == join) {
+		net.stopListening();
 		game.setReady();
 		infoLine.setString("CONNECTING TO " + enteredIP);
 		readyButton.setText("READY");
 		joinButton.setText("WAIT");
 	}
 	else if (newStatus == sendFire) {
+		net.stopListening();
 		net.setBlocking(false);
 		game.gaming(true);
 		infoLine.setString("FIRE!!!");
@@ -151,6 +155,7 @@ void Program::setStatus(ProgramStatus newStatus) {
 		joinButton.visible = false;
 	}
 	else if (newStatus == receiveFire) {
+		net.stopListening();
 		net.setBlocking(false);
 		game.gaming(false);
 		infoLine.setString("WAIT");
@@ -158,6 +163,7 @@ void Program::setStatus(ProgramStatus newStatus) {
 		joinButton.visible = false;
 	}
 	else if (newStatus == receiveImpact) {
+		net.stopListening();
 		net.setBlocking(false);
 		game.gaming(false);
 		infoLine.setString("WAIT");
@@ -165,6 +171,7 @@ void Program::setStatus(ProgramStatus newStatus) {
 		joinButton.visible = false;
 	}
 	else if (newStatus == victory) {
+		net.stopListening();
 		game.setReady();
 		background.setColor(sf::Color::Blue);
 		infoLine.setString("VICTORY");
@@ -174,6 +181,7 @@ void Program::setStatus(ProgramStatus newStatus) {
 		joinButton.visible = true;
 	}
 	else if (newStatus == defeat) {
+		net.stopListening();
 		game.setReady();
 		background.setColor(sf::Color::Red);
 		infoLine.setString("DEFEAT");

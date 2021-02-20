@@ -26,7 +26,7 @@ void Network::sendFire(sf::Uint8 tileX, sf::Uint8 tileY) {
 sf::Socket::Status Network::receiveFire(sf::Uint8& tileX, sf::Uint8& tileY) {
 	sf::Packet pack;
 	sf::Socket::Status st = sock.receive(pack);
-	if (st == sf::Socket::Done)	pack >> tileX >> tileY;
+	if (st == sf::Socket::Done) pack >> tileX >> tileY;
 	return st;
 }
 
@@ -40,6 +40,6 @@ void Network::sendImpact(bool hit) {
 sf::Socket::Status Network::receiveImpact(bool& hit) {
 	sf::Packet pack;
 	sf::Socket::Status st = sock.receive(pack);
-	if (st == sf::Socket::Done)	pack >> hit;
+	if (st == sf::Socket::Done) pack >> hit;
 	return st;
 }
