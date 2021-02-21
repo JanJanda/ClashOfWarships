@@ -28,7 +28,7 @@ class Program {
 public:
 	static const int windowWidth = 960;
 	static const int windowHeight = 640;
-	Program(sf::RenderWindow& rw);
+	Program(sf::RenderWindow& rw, int netPort);
 	bool run();
 };
 

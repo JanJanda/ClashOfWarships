@@ -1,6 +1,6 @@
 #include "program.hpp"
 
-Program::Program(sf::RenderWindow& rw) : window(rw) {
+Program::Program(sf::RenderWindow& rw, int netPort) : window(rw), net(netPort) {
 	infoLine.setFont(Resources::getStencil());
 	infoLine.setCharacterSize(40);
 	infoLine.setFillColor(sf::Color::White);

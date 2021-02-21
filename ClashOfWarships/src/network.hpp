@@ -4,11 +4,11 @@
 #include <SFML/Network.hpp>
 
 class Network {
-	static const int port = 52218;
+	int port;
 	sf::TcpListener listener;
 	sf::TcpSocket sock;
 public:
-	Network();
+	Network(int port);
 	bool listen();
 	void stopListening() { listener.close(); }
 	bool accept();

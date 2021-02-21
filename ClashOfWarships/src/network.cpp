@@ -1,6 +1,6 @@
 #include "network.hpp"
 
-Network::Network() {
+Network::Network(int port) : port(port) {
 	listener.setBlocking(false);
 }
 

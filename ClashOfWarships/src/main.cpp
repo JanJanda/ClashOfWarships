@@ -1,11 +1,19 @@
 #include "program.hpp"
 
-int main()
+int main(int argc, char** args)
 {
+	int port = 52218;
+	if (argc >= 2) {
+		try {
+			port = std::stoi(*(args + 1));
+		}
+		catch (...) {}
+	}
+
 	sf::RenderWindow window(sf::VideoMode(Program::windowWidth, Program::windowHeight), "Clash of Warships", sf::Style::Titlebar | sf::Style::Close);
-	Program* p = new Program(window);
-	while (p->run()) {
-		delete p;
-		p = new Program(window);
+	Program* prog = new Program(window, port);
+	while (prog->run()) {
+		delete prog;
+		prog = new Program(window, port);
 	}
 }
