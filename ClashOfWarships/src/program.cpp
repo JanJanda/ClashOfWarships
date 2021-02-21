@@ -24,7 +24,7 @@ bool Program::run() {
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
-			if (status == victory || status == defeat) {
+			if (status == victory || status == defeat || status == disconnected) {
 				if (readyButton.isClicked(event)) return true;
 				if (joinButton.isClicked(event)) window.close();
 			}
@@ -33,7 +33,7 @@ bool Program::run() {
 		}
 		newFrame();
 
-		if (status != victory && status != defeat) {
+		if (status != victory && status != defeat && status != disconnected) {
 			if (game.getAllyHealth() <= 0) setStatus(defeat);
 			if (game.getEnemyHealth() <= 0) setStatus(victory);
 		}
@@ -46,6 +46,7 @@ bool Program::run() {
 				if (!aux) setStatus(sendFire);
 				net.sendImpact(aux);
 			}
+			else if (st == sf::Socket::Disconnected || st == sf::Socket::Error) setStatus(disconnected);
 		}
 		if (status == sendFire) {
 			if (game.getFired()) {
@@ -61,6 +62,7 @@ bool Program::run() {
 				if (hit) setStatus(sendFire);
 				else setStatus(receiveFire);
 			}
+			else if (st == sf::Socket::Disconnected || st == sf::Socket::Error) setStatus(disconnected);
 		}
 
 		if (status == listening) {
@@ -185,6 +187,16 @@ void Program::setStatus(ProgramStatus newStatus) {
 		game.setReady();
 		background.setColor(sf::Color::Red);
 		infoLine.setString("DEFEAT");
+		readyButton.setText("RESET");
+		readyButton.visible = true;
+		joinButton.setText("CLOSE");
+		joinButton.visible = true;
+	}
+	else if (newStatus == disconnected) {
+		net.stopListening();
+		game.setReady();
+		background.setColor(sf::Color(0x7f7f7fff));
+		infoLine.setString("CONNECTION LOST");
 		readyButton.setText("RESET");
 		readyButton.visible = true;
 		joinButton.setText("CLOSE");
