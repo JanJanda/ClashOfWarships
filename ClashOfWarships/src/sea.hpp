@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "resources.hpp"
 
-class Sea {
+class EnemySea {
 protected:
 	static const int SEA_TILE_SIZE = 40;
 	static const int SEA_WIDTH = 10;
@@ -30,20 +30,15 @@ protected:
 	Tile map[SEA_HEIGHT][SEA_WIDTH];
 	const int positionX;
 	const int positionY;
-public: // virtual destrucktor?
-	Sea(int positionX, int positionY);
+public:
+	EnemySea(int positionX, int positionY);
 	void draw(sf::RenderWindow& window);
 	bool isActivePosition(int x, int y, int& tileX, int& tileY);
 	void setMissed(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::missed); }
-};
-
-class EnemySea : public Sea { // je to potreba?
-public:
-	EnemySea(int positionX, int positionY) : Sea(positionX, positionY) {}
 	void setHit(int tileX, int tileY) { map[tileY][tileX].setStatus(Tile::hitEnemy); }
 };
 
-class AlliedSea : public Sea {
+class AlliedSea : public EnemySea {
 
 	struct Ship {
 		Ship() {}

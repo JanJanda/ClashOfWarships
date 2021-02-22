@@ -1,17 +1,17 @@
 #include "sea.hpp"
 #include "resources.hpp"
 
-Sea::Tile::Tile(int positionX, int positionY) {
+EnemySea::Tile::Tile(int positionX, int positionY) {
 	visual.setColor(sf::Color(status));
 	visual.setPosition(positionX, positionY);
 }
 
-void Sea::Tile::setStatus(TileStatus newStatus) {
+void EnemySea::Tile::setStatus(TileStatus newStatus) {
 	status = newStatus;
 	visual.setColor(sf::Color(newStatus));
 }
 
-Sea::Sea(int positionX, int positionY) : positionX(positionX), positionY(positionY) {
+EnemySea::EnemySea(int positionX, int positionY) : positionX(positionX), positionY(positionY) {
 	for (int i = 0; i < SEA_HEIGHT; i++) {
 		for (int j = 0; j < SEA_WIDTH; j++) {
 			map[i][j] = Tile(positionX + (j * SEA_TILE_SIZE), positionY + (i * SEA_TILE_SIZE));
@@ -19,7 +19,7 @@ Sea::Sea(int positionX, int positionY) : positionX(positionX), positionY(positio
 	}
 }
 
-void Sea::draw(sf::RenderWindow& window) {
+void EnemySea::draw(sf::RenderWindow& window) {
 	for (int i = 0; i < SEA_HEIGHT; i++) {
 		for (int j = 0; j < SEA_WIDTH; j++) {
 			map[i][j].draw(window);
@@ -27,7 +27,7 @@ void Sea::draw(sf::RenderWindow& window) {
 	}
 }
 
-bool Sea::isActivePosition(int x, int y, int& tileX, int& tileY) {
+bool EnemySea::isActivePosition(int x, int y, int& tileX, int& tileY) {
 	if (x >= positionX && x < positionX + (SEA_TILE_SIZE * SEA_WIDTH) && y >= positionY && y < positionY + (SEA_TILE_SIZE * SEA_HEIGHT)) {
 		tileX = (x - positionX) / SEA_TILE_SIZE;
 		tileY = (y - positionY) / SEA_TILE_SIZE;
@@ -71,7 +71,7 @@ bool AlliedSea::Ship::covers(int tileX, int tileY) {
 	return tileX >= positionTileX && tileX < positionTileX + sizeTileX && tileY >= positionTileY && tileY < positionTileY + sizeTileY;
 }
 
-AlliedSea::AlliedSea(int positionX, int positionY) : Sea(positionX, positionY) {
+AlliedSea::AlliedSea(int positionX, int positionY) : EnemySea(positionX, positionY) {
 	fleet[0] = Ship(0, 0, 4, 2, positionX, positionY, Resources::getCarrier());
 	fleet[1] = Ship(0, 3, 4, 1, positionX, positionY, Resources::getBattleship());
 	fleet[2] = Ship(0, 5, 3, 1, positionX, positionY, Resources::getCruiser());
@@ -81,7 +81,7 @@ AlliedSea::AlliedSea(int positionX, int positionY) : Sea(positionX, positionY) {
 }
 
 void AlliedSea::draw(sf::RenderWindow& window) {
-	Sea::draw(window);
+	EnemySea::draw(window);
 	for (int i = 0; i < SHIPS_COUNT; i++) {
 		fleet[i].draw(window);
 	}
@@ -103,14 +103,9 @@ bool AlliedSea::setShipsPosition(int shipId, int tileX, int tileY) {
 
 bool AlliedSea::rotateShip(int shipId) {
 	fleet[shipId].rotate();
-	if (checkPlacement(shipId)) {
-		fleet[shipId].setMisplaced(false);
-		return true;
-	}
-	else {
-		fleet[shipId].setMisplaced(true);
-		return false;
-	}
+	bool check = checkPlacement(shipId);
+	fleet[shipId].setMisplaced(!check);
+	return check;
 }
 
 bool AlliedSea::checkPlacement(int shipId) {

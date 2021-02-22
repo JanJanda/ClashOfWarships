@@ -11,9 +11,10 @@ int main(int argc, char** args)
 	}
 
 	sf::RenderWindow window(sf::VideoMode(Program::windowWidth, Program::windowHeight), "Clash of Warships", sf::Style::Titlebar | sf::Style::Close);
-	Program* prog = new Program(window, port);
-	while (prog->run()) {
+	bool again = true;
+	while (again) {
+		Program* prog = new Program(window, port);
+		again = prog->run();
 		delete prog;
-		prog = new Program(window, port);
 	}
 }
