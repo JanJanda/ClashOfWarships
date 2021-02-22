@@ -56,5 +56,8 @@
     <ClInclude Include="src\program.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\icon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

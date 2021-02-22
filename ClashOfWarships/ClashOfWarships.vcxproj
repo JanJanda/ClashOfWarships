@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="src\button.hpp" />
     <ClInclude Include="src\game.hpp" />
+    <ClInclude Include="src\icon.h" />
     <ClInclude Include="src\network.hpp" />
     <ClInclude Include="src\program.hpp" />
     <ClInclude Include="src\resources.hpp" />
