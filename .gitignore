@@ -4,3 +4,7 @@ bin/
 ClashOfWarships/*.png
 ClashOfWarships/*.ttf
 ClashOfWarships/ERROR_MESSAGE.txt
+Documentation/*.aux
+Documentation/*.log
+Documentation/*.pdf
+Documentation/*.synctex.gz

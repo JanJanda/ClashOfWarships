@@ -1,0 +1,27 @@
+ \documentclass[12pt]{article}
+ \pagenumbering{gobble}
+ \usepackage[top=1cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+ \usepackage{indentfirst}
+ \title{Dokumentace k zápočtovému programu z C++ (NPRG041)}
+ \date{22. 2. 2021}
+ \author{Jan Janda}
+ 
+ \begin{document}
+ 
+ \maketitle
+ 
+ \section*{Použití programu}
+ 
+ Tento program je obdobou klasické hry lodě. Na začátku je potřeba připravit se na souboj vhodným rozmístěním lodí. Toho lze snadno dosáhnout pomocí myši. Loď se uchopí a uvolní kliknutím. Takto uchopenou loď lze přesouvat tahem myši a otočit kliknutím pravého tlačítka myši. Loď lze uvolnit, jen pokud je správně umístěna. Po rozmístění lodí již stačí jen navázat spojení po lokální síti takto: Jeden z uživatelů klikne na tlačítko \texttt{READY}, tím si zobrazí svou adresu. Druhý uživatel klikne na tlačítko \texttt{JOIN} a zadá adresu svého soupeře. Tím dojde ke spojení a ten uživatel, který použil tlačítko \texttt{READY} je jako první na tahu. Během hry se hráči střídají v palbě. Pokud některý hráč zasáhne nepřátelskou loď, je okamžitě opět na tahu. Zvítězí ten hráč, který jako první zničí všechny nepřátelské lodě. Po skončení hry je možné kliknutím na příslušné tlačítko program ukončit nebo uvést zpět do úvodního stavu. Ovládání je velmi intuitivní, přesto lze přidržením klávesy \texttt{F1} zobrazit nápovědu.
+ 
+ Existuje mizivá pravděpodobnost, že přednastavený síťový port bude na konkrétním počítači již obsazen jiným programem. To se projeví chybovým upozorněním "NETWORK FAILED". Pokud se uživatel vyzná v této problematice, může spustit hru z příkazové řádky a jako jediný parametr jí předat číslo portu, který nahradí přednastavený port.
+
+ \section*{Implementace}
+ 
+ Program je rozdělen do tříd tak, že každá ze tříd implementuje smysluplnou část funkcionality programu. Třída \texttt{Resources} je singleton a poskytuje objekty načítané ze souborů. Třídy \texttt{EnemySea} a její rozšíření \texttt{AlliedSea} poskytují přístup k herním plochám, rozmisťují lodě, mění stav herních políček, převádějí pozici kurzoru na souřadnice herního pole a zajišťují grafické zobrazování související se stavem herní plochy. Třída \texttt{Game} udržuje především jednu instanci třídy \texttt{EnemySea}, jednu instanci třídy \texttt{AlliedSea} a proměnné pro udržení stavu hry. Také dle svého stavu poskytuje reakci na události uživatelského rozhraní a informuje o změnách svého stavu. Třída \texttt{Button} poskytuje grafickou i funkční reprezentaci tlačítka uživatelského rozhraní. Třída \texttt{Network} je síťovým rozhraním programu.
+ 
+ Třída \texttt{Program} reprezentuje samotný program se vším, co ke svému běhu potřebuje. Její metoda \texttt{run} obsahuje hlavní herní smyčku. Tato smyčka opakovaně provádí reakce na vzniklé události uživatelského rozhraní, mění a vykresluje uživatelské rozhraní, zadává síťovou komunikaci a spojuje ostatní části programu. Úkony prováděné v této smyčce se řídí stavem programu a stav programu je zde také měněn. Stav programu se nemění přímým přístupem do příslušné proměnné, ale s výhodou se použije odpovídající metoda, která podle nového stavu nakonfiguruje program. Herní síťová komunikace neblokuje herní smyčku a program zůstává během hraní responzivní.
+ 
+ K implementaci byla použita knihovna SFML, která svým grafickým a síťovým modulem umožnila vznik této hry v programovacím jazyku C++. 
+
+ \end{document}
